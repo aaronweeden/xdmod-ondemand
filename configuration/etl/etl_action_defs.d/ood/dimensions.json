@@ -20,6 +20,9 @@
         },
         {
             "$ref": "${table_definition_dir}/ood/location.json#/table_definition"
+        },
+        {
+            "$ref": "${table_definition_dir}/ood/request_method.json#/table_definition"
         }
     ],
     "source_query": {
@@ -34,7 +37,8 @@
             "location_name": "CASE WHEN n.city = 'NA' AND n.state = 'NA' AND n.country = 'NA' THEN 'Unknown' ELSE CONCAT_WS(', ', n.city, n.state, n.country) END",
             "location_order_id": "-1",
             "ua_family": "n.ua_family",
-            "ua_os_family": "n.ua_os_family"
+            "ua_os_family": "n.ua_os_family",
+            "request_method": "n.request_method"
         },
         "joins": [
             {
@@ -69,6 +73,9 @@
         },
         "os": {
             "family": "ua_os_family"
+        },
+        "request_method": {
+            "method": "request_method"
         }
     }
 }

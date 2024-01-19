@@ -18,13 +18,14 @@
     "migration-10_5_0-11_0_0": [
         {
             "name": "alter-tables",
-            "description": "Remove header_referer, add host and request_path",
+            "description": "Remove header_referer; add host, request_path, and request_method",
             "class": "ManageTables",
             "definition_file_list": [
                 "ood/staging.json",
                 "ood/normalized.json",
                 "ood/host.json",
                 "ood/request_path.json",
+                "ood/request_method.json",
                 "ood/page_impressions.json"
             ]
         },

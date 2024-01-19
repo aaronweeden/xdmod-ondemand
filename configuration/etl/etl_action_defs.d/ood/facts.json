@@ -14,6 +14,7 @@
             "person_id": -1,
             "user_id": "u.id",
             "request_path_id": "rp.id",
+            "request_method_id": "rm.id",
             "app_id": "a.id",
             "location_id": "l.id",
             "ua_family_id": "ua.id",
@@ -42,6 +43,12 @@
                 "schema": "${SOURCE_SCHEMA}",
                 "alias": "rp",
                 "on": "rp.path = n.request_path"
+            },
+            {
+                "name": "request_method",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "rm",
+                "on": "rm.method = n.request_method"
             },
             {
                 "name": "app",
@@ -85,6 +92,7 @@
             "host_id": "host_id",
             "user_id": "user_id",
             "request_path_id": "request_path_id",
+            "request_method_id": "request_method_id",
             "app_id": "app_id",
             "location_id": "location_id",
             "ua_family_id": "ua_family_id",
