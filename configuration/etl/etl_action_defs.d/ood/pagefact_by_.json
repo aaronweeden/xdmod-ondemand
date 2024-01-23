@@ -39,6 +39,7 @@
             "${AGGREGATION_UNIT}": "${:PERIOD_VALUE}",
             "record_resource_id": "resource_id",
             "resource_organization_id": "resource_organization_id",
+            "host_id": "host_id",
             "person_id": "person_id",
             "user_id": "user_id",
             "app_id": "app_id",
@@ -51,6 +52,7 @@
         "groupby": [
             "record_resource_id",
             "resource_organization_id",
+            "host_id",
             "person_id",
             "user_id",
             "app_id",

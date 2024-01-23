@@ -32,6 +32,11 @@
                 "nullable": false
             },
             {
+                "name": "host_id",
+                "type": "int(11)",
+                "nullable": false
+            },
+            {
                 "name": "person_id",
                 "type": "int(11)",
                 "nullable": false
@@ -81,6 +86,7 @@
                 "name": "uniq",
                 "columns": [
                     "log_time_ts",
+                    "host_id",
                     "user_id",
                     "app_id"
                 ],

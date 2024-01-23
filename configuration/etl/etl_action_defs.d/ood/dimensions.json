@@ -1,6 +1,9 @@
 {
     "table_definition": [
         {
+            "$ref": "${table_definition_dir}/ood/host.json#/table_definition"
+        },
+        {
             "$ref": "${table_definition_dir}/ood/app.json#/table_definition"
         },
         {
@@ -18,6 +21,7 @@
     ],
     "source_query": {
         "records": {
+            "host": "n.host",
             "app": "n.app",
             "user": "n.user",
             "city": "n.city",
@@ -42,6 +46,9 @@
         },
         "users": {
             "username": "user"
+        },
+        "host": {
+            "host": "host"
         },
         "location": {
             "city": "city",

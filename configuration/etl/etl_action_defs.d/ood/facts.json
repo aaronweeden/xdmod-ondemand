@@ -10,6 +10,7 @@
             "log_day_id": "YEAR(FROM_UNIXTIME(n.log_time_ts)) * 100000 + DAYOFYEAR(FROM_UNIXTIME(n.log_time_ts))",
             "resource_id": "r.id",
             "resource_organization_id": "r.organization_id",
+            "host_id": "h.id",
             "person_id": -1,
             "user_id": "u.id",
             "app_id": "a.id",
@@ -28,6 +29,12 @@
                 "schema": "${UTILITY_SCHEMA}",
                 "alias": "r",
                 "on": "r.code = '${OOD_RESOURCE_CODE}'"
+            },
+            {
+                "name": "host",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "h",
+                "on": "h.host = n.host"
             },
             {
                 "name": "app",
@@ -68,6 +75,7 @@
             "person_id": "person_id",
             "resource_id": "resource_id",
             "resource_organization_id": "resource_organization_id",
+            "host_id": "host_id",
             "user_id": "user_id",
             "app_id": "app_id",
             "location_id": "location_id",
