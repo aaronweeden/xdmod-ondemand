@@ -11,6 +11,11 @@
                 "nullable": false
             },
             {
+                "name": "host",
+                "type": "char(64)",
+                "nullable": false
+            },
+            {
                 "name": "user",
                 "type": "char(64)",
                 "nullable": false
@@ -51,6 +56,7 @@
                 "name": "PRIMARY",
                 "columns": [
                     "log_time_ts",
+                    "host",
                     "user",
                     "app"
                 ]
