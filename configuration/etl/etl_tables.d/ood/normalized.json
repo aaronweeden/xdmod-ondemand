@@ -6,13 +6,44 @@
         "collation": "utf8mb4_general_ci",
         "columns": [
             {
+                "name": "id",
+                "type": "int(11)",
+                "nullable": false,
+                "extra": "auto_increment"
+            },
+            {
                 "name": "log_time_ts",
                 "type": "int(11)",
                 "nullable": false
             },
             {
+                "name": "host",
+                "type": "char(64)",
+                "nullable": false
+            },
+            {
                 "name": "user",
                 "type": "char(64)",
+                "nullable": false
+            },
+            {
+                "name": "request_path",
+                "type": "varchar(511)",
+                "nullable": false
+            },
+            {
+                "name": "request_method",
+                "type": "varchar(8)",
+                "nullable": false
+            },
+            {
+                "name": "reverse_proxy_host",
+                "type": "varchar(64)",
+                "nullable": false
+            },
+            {
+                "name": "reverse_proxy_port",
+                "type": "varchar(5)",
                 "nullable": false
             },
             {
@@ -37,12 +68,12 @@
             },
             {
                 "name": "ua_family",
-                "type": "varchar(255)",
+                "type": "varchar(32)",
                 "nullable": true
             },
             {
                 "name": "ua_os_family",
-                "type": "varchar(255)",
+                "type": "varchar(32)",
                 "nullable": true
             }
         ],
@@ -50,10 +81,22 @@
             {
                 "name": "PRIMARY",
                 "columns": [
+                    "id"
+                ],
+                "is_unique": true
+            },
+            {
+                "name": "uniq",
+                "columns": [
                     "log_time_ts",
+                    "host",
                     "user",
-                    "app"
-                ]
+                    "request_path",
+                    "request_method",
+                    "ua_family",
+                    "ua_os_family"
+                ],
+                "is_unique": true
             }
         ]
     }

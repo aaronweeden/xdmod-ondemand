@@ -32,6 +32,11 @@
                 "nullable": false
             },
             {
+                "name": "host_id",
+                "type": "int(11)",
+                "nullable": false
+            },
+            {
                 "name": "person_id",
                 "type": "int(11)",
                 "nullable": false
@@ -40,6 +45,26 @@
                 "name": "user_id",
                 "type": "int(11)",
                 "nullable": false
+            },
+            {
+                "name": "request_path_id",
+                "type": "int(11)",
+                "nullable": true
+            },
+            {
+                "name": "request_method_id",
+                "type": "tinyint",
+                "nullable": true
+            },
+            {
+                "name": "reverse_proxy_host_id",
+                "type": "int(11)",
+                "nullable": true
+            },
+            {
+                "name": "reverse_proxy_port_id",
+                "type": "smallint unsigned",
+                "nullable": true
             },
             {
                 "name": "app_id",
@@ -81,8 +106,14 @@
                 "name": "uniq",
                 "columns": [
                     "log_time_ts",
+                    "resource_id",
+                    "host_id",
                     "user_id",
-                    "app_id"
+                    "request_path_id",
+                    "request_method_id",
+                    "app_id",
+                    "ua_family_id",
+                    "ua_os_family_id"
                 ],
                 "is_unique": true
             },

@@ -35,6 +35,12 @@
                 "comment": "DIMENSION: The organization of the resource running Open OnDemand."
             },
             {
+                "name": "host_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "DIMENSION: The host (IP address) used to access Open OnDemand."
+            },
+            {
                 "name": "person_id",
                 "type": "int(11)",
                 "nullable": false,
@@ -50,13 +56,13 @@
                 "name": "app_id",
                 "type": "int(11)",
                 "nullable": false,
-                "comment": "DIMENSION: The Open OnDemand app that was accessed. Inferred from the referer path."
+                "comment": "DIMENSION: The Open OnDemand app that was accessed. Inferred from the request line path."
             },
             {
                 "name": "location_id",
                 "type": "int(11)",
                 "nullable": false,
-                "comment": "DIMENSION: The location of the web client that accessed Open OnDemand. Inferred from the IP address."
+                "comment": "DIMENSION: The location of the web client that accessed Open OnDemand. Inferred from the host (IP address)."
             },
             {
                 "name": "ua_family_id",
@@ -79,7 +85,7 @@
             {
                 "name": "session_count",
                 "type": "int(11)",
-                "comment": "FACT: The total number of sessions, where a session is a unique grouping of page impressions by person, app, day, resource, operating system, and browser.",
+                "comment": "FACT: The total number of sessions, where a session is a unique grouping of page impressions by person, app, day, resource, host (IP address), operating system, and browser.",
                 "nullable": false
             }
         ],
@@ -94,6 +100,12 @@
                 "name": "index_resource_organization_id",
                 "columns": [
                     "resource_organization_id"
+                ]
+            },
+            {
+                "name": "index_host_id",
+                "columns": [
+                    "host_id"
                 ]
             },
             {

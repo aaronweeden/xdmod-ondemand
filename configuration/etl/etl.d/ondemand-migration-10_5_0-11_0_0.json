@@ -1,7 +1,44 @@
 {
     "module": "ondemand",
     "defaults": {
+        "migration-10_5_0-11_0_0": {
+            "truncate_destination": false,
+            "namespace": "ETL\\Maintenance",
+            "options_class": "MaintenanceOptions",
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "Database with Open OnDemand usage data",
+                    "config": "datawarehouse",
+                    "schema": "modw_ondemand"
+                }
+            }
+        }
     },
     "migration-10_5_0-11_0_0": [
+        {
+            "name": "alter-tables",
+            "description": "Remove header_referer; add host, request_path, request_method, reverse_proxy_host, and reverse_proxy_port",
+            "class": "ManageTables",
+            "definition_file_list": [
+                "ood/staging.json",
+                "ood/normalized.json",
+                "ood/host.json",
+                "ood/request_path.json",
+                "ood/request_method.json",
+                "ood/reverse_proxy_host.json",
+                "ood/reverse_proxy_port.json",
+                "ood/page_impressions.json"
+            ]
+        },
+        {
+            "name": "alter-aggregate-tables",
+            "description": "Add host column to aggregate tables",
+            "class": "ManageAggregateTables",
+            "aggregation_units": ["day", "month", "quarter", "year"],
+            "definition_file_list": [
+                "ood/pagefact_by_.json"
+            ]
+        }
     ]
 }
