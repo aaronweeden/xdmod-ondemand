@@ -83,8 +83,20 @@
             }
         },
         {
+            "name": "delete-non-page-impressions",
+            "description": "Delete non page impressions from the staging table (e.g., images and stylesheets)",
+            "namespace": "ETL\\Maintenance",
+            "class": "ExecuteSql",
+            "options_class": "MaintenanceOptions",
+            "sql_file_list": [
+                {
+                    "sql_file": "ood/delete_non_page_impressions.sql"
+                }
+            ]
+        },
+        {
             "name": "normalize-staging",
-            "description": "Filter and normalized staged data",
+            "description": "Filter and normalize staged data",
             "class": "RegexTransformIngestor",
             "truncate_destination": true,
             "regex_column": {
