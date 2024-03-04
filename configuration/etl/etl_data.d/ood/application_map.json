@@ -49,5 +49,6 @@
     "#^/pun/sys/vncsim/sys/([^/]+).*#": "sys/$1 (sys/ihpc)",
     "#^/pun/sys/vncsim/usr/([^/]+)/([^/]+).*#": "usr/$1/$2 (sys/ihpc)",
     "#^/pun/sys/([^/^?]+).*$#": "sys/$1",
-    "#^/pun/usr/([^/]+)/([^/]+).*#": "usr/$1/$2"
+    "#^/pun/usr/([^/]+)/([^/]+).*#": "usr/$1/$2",
+    "#^/r?node/.*#": "reverse proxy server"
 }
