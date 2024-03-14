@@ -24,6 +24,7 @@
                 "ood/staging.json",
                 "ood/normalized.json",
                 "ood/host.json",
+                "ood/request_path.json",
                 "ood/page_impressions.json"
             ]
         },

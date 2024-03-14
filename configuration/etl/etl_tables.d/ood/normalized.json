@@ -21,6 +21,11 @@
                 "nullable": false
             },
             {
+                "name": "request_path",
+                "type": "varchar(255)",
+                "nullable": false
+            },
+            {
                 "name": "app",
                 "type": "varchar(64)",
                 "nullable": false
@@ -58,7 +63,7 @@
                     "log_time_ts",
                     "host",
                     "user",
-                    "app"
+                    "request_path"
                 ]
             }
         ]

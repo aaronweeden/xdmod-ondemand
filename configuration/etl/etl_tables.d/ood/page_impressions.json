@@ -47,6 +47,12 @@
                 "nullable": false
             },
             {
+                "name": "request_path_id",
+                "type": "int(11)",
+                "nullable": false,
+                "default": -1
+            },
+            {
                 "name": "app_id",
                 "type": "int(11)",
                 "nullable": false
@@ -88,7 +94,7 @@
                     "log_time_ts",
                     "host_id",
                     "user_id",
-                    "app_id"
+                    "request_path_id"
                 ],
                 "is_unique": true
             },

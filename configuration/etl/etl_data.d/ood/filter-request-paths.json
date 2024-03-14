@@ -1,0 +1,5 @@
+{
+    "/(?# Remove numeric query params at end of string)(\\?|&)\\d+$/": "",
+    "/(?# Remove numeric query params between ? and &)\\?\\d+&/": "?",
+    "/(?# Remove numeric query params between & and &)&\\d+&/": "&"
+}

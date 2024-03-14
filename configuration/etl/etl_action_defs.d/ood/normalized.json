@@ -33,6 +33,7 @@
             "log_time_ts": "log_time_ts",
             "host": "host",
             "user": "user",
+            "request_path": "request_path",
             "app": "app",
             "city": "city",
             "state": "state",

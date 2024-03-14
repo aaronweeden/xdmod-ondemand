@@ -88,10 +88,16 @@
             "class": "RegexTransformIngestor",
             "truncate_destination": true,
             "regex_column": {
-                "request_path": "app"
+                "app": "request_path",
+                "request_path": "request_path"
             },
             "regex_config": {
-                "$include": "etl_data.d/ood/application_map.json"
+                "app": {
+                    "$include": "etl_data.d/ood/application_map.json"
+                },
+                "request_path": {
+                    "$include": "etl_data.d/ood/filter-request-paths.json"
+                }
             },
             "definition_file": "ood/normalized.json",
             "hide_sql_warning_codes": [
