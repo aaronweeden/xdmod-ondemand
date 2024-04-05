@@ -1,6 +1,7 @@
 {
     ";(?# Remove trailing question mark        )\\?$;": "",
     ";(?# Remove trailing slash                )/$;": "",
+    ";(?# Generalize OIDC                      )^(/oidc\\?code=).+(&state=).+;": "$1[code]$2[state]",
     ";(?# Generalize shell                     )^(/pun/sys/shell)(/.*|$);": "$1[...]",
     ";(?# Generalize files app paths           )^(/pun/sys/(?:dashboard/)?files/api/[^/]+/fs/).*;": "$1[path]",
     ";(?# Generalize files app paths           )^(/pun/sys/(?:dashboard/)?files/fs/).*;": "$1[path]",

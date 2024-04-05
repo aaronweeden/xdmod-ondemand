@@ -35,7 +35,7 @@
         "where": [
             "s.user != '-'",
             "s.request_path != '/pun/sys/'",
-            "s.request_path REGEXP '^/(pun|r?node)/.+'",
+            "(s.request_path REGEXP '^/(pun|r?node)/.+' OR s.request_path LIKE '/oidc%')",
             "s.request_path NOT LIKE '/pun/sys/dashboard/apps/icon/%'",
             "(s.request_path NOT REGEXP '\\\\.(css|gif|ico|jpg|js|json|map|oga|otf|png|rstheme|svg|ttf|wasm|woff|woff2)(\\\\?.*)?$' OR s.request_path REGEXP '^/pun/sys/dashboard/files/(api/[^/]+/)?(edit|fs)/.+' OR s.request_path LIKE '/pun/sys/files/fs/%' OR s.request_path LIKE '/pun/sys/file-editor/edit/%')"
         ]

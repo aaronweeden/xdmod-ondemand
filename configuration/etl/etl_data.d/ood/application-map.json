@@ -1,4 +1,5 @@
 {
+    "#^/oidc/.*#": "OIDC",
     "#^/node/[^/]+/[^/]+/(api|doc|edit|files|ipyparallel|nbconvert|notebooks|lab|login|logout|lsp|metrics|panel-preview|terminals|tree)(/|\\?|$).*#": "jupyter (reverse proxy server)",
     "#^/pun/sys/dashb%E2%80%A6#": "sys/dashboard",
     "#^/pun/sys/dashboard/activejobs/?.*#": "sys/activejobs",
