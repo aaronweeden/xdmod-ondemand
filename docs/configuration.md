@@ -29,9 +29,9 @@ to setup the database manually.
 Create a database schema called `modw_ondemand` and grant permission for the XDMoD database user
 account to access this schema.
 
-Once the schema is created then the `acl-config` command should be run:
+Once the schema is created then the `xdmod-acl-config` command should be run:
 
-    $ /usr/xdmod/bin/acl-config
+    $ /usr/xdmod/bin/xdmod-acl-config
 
 ## Resource Setup
 
