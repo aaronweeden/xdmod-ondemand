@@ -2,6 +2,7 @@
 1. Make sure the version number is updated in `tools/xdmod-ondemand-export/xdmod_ondemand_export/__init__.py`.
 1. In `CHANGELOG.md`, add a section for the new version, and move the items from the "Main development branch" section to it.
 1. Create a Pull Request for the new version.
+1. Once the Pull Request is merged, tag the repository with the version number (e.g., `export-1.2.0`).
 
 # Distributing the new version to PyPI
 After the Pull Request is merged, these steps should be run from the `tools/xdmod-ondemand-export` directory.
