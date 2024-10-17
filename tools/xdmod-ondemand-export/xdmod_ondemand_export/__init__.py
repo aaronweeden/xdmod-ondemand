@@ -1,5 +1,5 @@
 __title__ = "xdmod-ondemand-export"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __description__ = (
     "POST Open OnDemand logs to a web server for inclusion in XDMoD."
 )
@@ -20,6 +20,7 @@ import re
 import requests
 import secrets
 import sys
+import yaml
 
 
 class LogPoster:
@@ -55,7 +56,7 @@ class LogPoster:
             self.__new_json = {}
             try:
                 app_lists = self.__get_app_lists()
-                self.__send_app_lists(app_lists)
+                self.__post_app_lists(app_lists)
             # If sending the lists of applications fails, still try to send the
             # logs.
             finally:
@@ -234,33 +235,66 @@ class LogPoster:
         date = datetime.today().strftime('%Y-%m-%d')
         with open('/opt/ood/VERSION') as f:
             version = f.read().strip()
-        system_apps = os.listdir('/var/www/ood/apps/sys')
-        system_apps.sort()
-        all_shared_apps = []
+        system_apps = {}
+        system_app_dirs_path = '/var/www/ood/apps/sys'
+        system_app_dirs = os.listdir(system_app_dirs_path)
+        system_app_dirs.sort()
+        for system_app_dir in system_app_dirs:
+            self.__parse_manifest_and_post_icon(
+                'sys_' + system_app_dir,
+                system_apps,
+                system_app_dirs_path + '/' + system_app_dir,
+            )
+        shared_apps = {}
         usr_dirs_path = '/var/www/ood/apps/usr'
         usr_dirs = os.listdir(usr_dirs_path)
         for usr_dir in usr_dirs:
             try:
-                shared_apps = os.listdir(
+                shared_app_dirs = os.listdir(
                     usr_dirs_path
                     + '/'
                     + usr_dir
                     + '/gateway'
                 )
-                all_shared_apps += shared_apps
+                for shared_app_dir in shared_app_dirs:
+                    self.__parse_manifest_and_post_icon(
+                        'usr_' + usr_dir + '_' + shared_app_dir,
+                        shared_apps,
+                        usr_dirs_path + '/' + shared_app_dir,
+                    )
             except FileNotFoundError:
                 pass
-        all_shared_apps.sort()
+        shared_apps = dict(sorted(shared_apps.items()))
+        print('shared_apps:', shared_apps)
         app_lists = {
             'date': date,
             'version': version,
             'system_apps': system_apps,
-            'shared_apps': all_shared_apps,
+            'shared_apps': shared_apps,
         }
         self.__logger.debug(app_lists)
         return app_lists
 
-    def __send_app_lists(self, app_lists):
+    def __parse_manifest_and_post_icon(self, icon_name, apps_dict, app_dir):
+        try:
+            with open(app_dir + '/manifest.yml') as f:
+                apps_dict[app_dir] = yaml.safe_load(f)
+            response = requests.post(
+                self.__url,
+                params={'type': 'app-icon'},
+                files={
+                    icon_name: open(app_dir + '/icon.png', 'rb'),
+                },
+                headers={
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + self.__api_token,
+                },
+            )
+            self.__process_response(response)
+        except FileNotFoundError:
+            pass
+
+    def __post_app_lists(self, app_lists):
         self.__logger.debug('POSTing the application lists.')
         response = requests.post(
             self.__url,

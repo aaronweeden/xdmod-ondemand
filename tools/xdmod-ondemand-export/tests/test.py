@@ -187,7 +187,7 @@ def run_test(
     if num_requests is None:
         num_requests = num_files
         # If any log files are sent, there will be one extra request to send
-        # the list of applications.
+        # the list of applications and one to send the Jupyter image icon.
         if num_requests > 0:
             num_requests += 1
     web_server_args = (tmp_dir, num_requests, mode)
@@ -221,17 +221,69 @@ def run_test(
     if num_requests > 0:
         expected_app_list = {
             'date': datetime.today().strftime('%Y-%m-%d'),
-            'version': '3.0.3',
-            'system_apps': [
-                'activejobs',
-                'bc_desktop',
-                'dashboard',
-                'file-editor',
-                'files',
-                'myjobs',
-                'shell',
-            ],
-            'shared_apps': shared_apps,
+            'version': '3.1.9',
+            'system_apps': {
+                'activejobs': {
+                    'name': 'Active Jobs',
+                    'category': 'Jobs',
+                    'description': 'View jobs currently running on available clusters configured for OnDemand.',
+                    'icon': 'fa://clock-o',
+                    'url': 'activejobs',
+                    'new_window': False
+                },
+                'bc_desktop': {
+                    'name': 'Desktop',
+                    'icon': 'fa://desktop',
+                    'category': 'Interactive Apps',
+                    'subcategory': 'Desktops',
+                    'role': 'batch_connect',
+                    'description': 'This app will launch an interactive desktop on one or more compute nodes. You\nwill have full access to the resources these nodes provide. This is analogous\nto an interactive batch job.\n'
+                },
+                'dashboard': {
+                    'name': 'Ood Dashboard',
+                    'description': 'stuff'
+                },
+                'file-editor': {
+                    'name': 'osc-editor',
+                    'description': 'A text editor for files on OSC systems',
+                    'documentation': '',
+                    'url': 'files/edit',
+                    'new_window': True
+                },
+                'files': {
+                    'name': 'Files App',
+                    'description': 'The Open OnDemand Files App',
+                    'category': 'Files',
+                    'icon': 'fa://folder',
+                    'role': 'files',
+                    'url': 'files',
+                    'new_window': False
+                },
+                'myjobs': {
+                    'name': 'Job Composer',
+                    'category': 'Jobs',
+                    'description': 'Job Composer allows the creation and submission of batch jobs',
+                    'icon': 'fas://magic'
+                },
+                'projects': {
+                    'category': 'Jobs',
+                    'description': 'The Open OnDemand Jobs Composer App',
+                    'icon': 'fa://magic',
+                    'name': 'Projects',
+                    'new_window': False,
+                    'role': 'projects',
+                    'url': 'projects',
+                },
+                'shell': {
+                    'name': 'Shell',
+                    'category': 'Clusters',
+                    'icon': 'fa://terminal',
+                    'description': 'Open OnDemand web-based terminal',
+                    'role': 'shell',
+                    'new_window': True
+                }
+            },
+            'shared_apps': {}
         }
         with open(tmp_dir + '/app-list.json') as app_list_file:
             actual_app_list = json.load(app_list_file)

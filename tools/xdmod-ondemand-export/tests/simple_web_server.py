@@ -19,17 +19,24 @@ class Server(BaseHTTPRequestHandler):
         is_app_list = (
             'type' in query_params and 'app-list' == query_params['type'][0]
         )
-        file_path = output_dir + (
-            '/app-list.json'
-            if is_app_list
-            else '/access.log.' + str(request_index)
+        is_app_icon = (
+            'type' in query_params and 'app-icon' == query_params['type'][0]
         )
+        file_path = output_dir
+        if is_app_list:
+            file_path += '/app-list.json'
+        elif is_app_icon:
+            file_path += '/' + self.path
+        else:
+            file_path += '/access.log.' + str(request_index)
         print('DEBUG:simple_web_server:Writing to ' + file_path)
         with open(file_path, 'w') as file:
-            if is_app_list:
+            if is_app_list or is_app_icon:
                 length = int(self.headers.get('content-length'))
                 content = self.rfile.read(length)
-                file.write(content.strip().decode('utf-8'))
+                if is_app_list:
+                    content = content.strip().decode('utf-8')
+                file.write(content)
             else:
                 while True:
                     length = self.rfile.readline().strip().decode('utf-8')
@@ -43,7 +50,7 @@ class Server(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'application/json')
         self.end_headers()
         self.wfile.write(b'{"message":"success"}')
-        if not is_app_list:
+        if not is_app_list and not is_app_icon:
             request_index += 1
 
 

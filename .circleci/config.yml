@@ -12,18 +12,30 @@ executors:
   alma8-export-tool: &alma8-export-tool-executor
     docker:
       - image: almalinux:8
+  rhel8-export-tool: &rhel8-export-tool-executor
+    docker:
+      - image: redhat/ubi8-minimal
   rocky9-export-tool: &rocky9-export-tool-executor
     docker:
       - image: rockylinux:9
   alma9-export-tool: &alma9-export-tool-executor
     docker:
       - image: almalinux:9
+  rhel9-export-tool: &rhel9-export-tool-executor
+    docker:
+      - image: redhat/ubi9-minimal
   ubuntu20_04-export-tool: &ubuntu20_04-export-tool-executor
     docker:
       - image: ubuntu:20.04
   ubuntu22_04-export-tool: &ubuntu22_04-export-tool-executor
     docker:
       - image: ubuntu:22.04
+  debian12-export-tool: &debian12-export-tool-executor
+    docker:
+      - image: debian:12
+  amazonlinux2023-export-tool: &amazonlinux2023-export-tool-executor
+    docker:
+      - image: amazonlinux:2023
 jobs:
   build:
     parameters:
@@ -134,7 +146,7 @@ jobs:
                   dnf install 'dnf-command(config-manager)' -y
                   dnf config-manager --set-enabled powertools
                   dnf install epel-release -y
-                  dnf module enable ruby:3.0 nodejs:14 -y
+                  dnf module enable ruby:3.1 nodejs:18 -y
       - when:
           condition:
             or:
@@ -147,42 +159,97 @@ jobs:
                   dnf install 'dnf-command(config-manager)' -y
                   dnf config-manager --set-enabled crb
                   dnf install epel-release -y
+                  dnf module enable ruby:3.1 nodejs:18
       - when:
           condition:
             or:
               - equal: [ rocky8, << parameters.os >> ]
               - equal: [ alma8, << parameters.os >> ]
+          steps:
+              - run:
+                  name: Install OnDemand
+                  command: |
+                    yum install https://yum.osc.edu/ondemand/3.1/ondemand-release-web-3.1-1.el8.noarch.rpm -y
+                    yum install ondemand -y
+      - when:
+          condition:
+            or:
               - equal: [ rocky9, << parameters.os >> ]
               - equal: [ alma9, << parameters.os >> ]
           steps:
               - run:
                   name: Install OnDemand
                   command: |
-                    yum install https://yum.osc.edu/ondemand/3.0/ondemand-release-web-3.0-1.noarch.rpm -y
+                    yum install https://yum.osc.edu/ondemand/3.1/ondemand-release-web-3.1-1.el9.noarch.rpm -y
                     yum install ondemand -y
       - when:
           condition:
             or:
               - equal: [ ubuntu20_04, << parameters.os >> ]
               - equal: [ ubuntu22_04, << parameters.os >> ]
+              - equal: [ debian12, << parameters.os >> ]
           steps:
             - run:
-                name: Install OnDemand
+                name: Install OnDemand (part 1)
                 command: |
                   apt install apt-transport-https ca-certificates -y
                   apt install wget -y
-                  wget -O /tmp/ondemand-release-web_3.0.0_all.deb https://apt.osc.edu/ondemand/3.0/ondemand-release-web_3.0.0_all.deb
-                  apt install /tmp/ondemand-release-web_3.0.0_all.deb
+      - when:
+          condition:
+            equal: [ ubuntu20_04, << parameters.os >> ]
+          steps:
+            - run:
+                name: Install OnDemand (part 2)
+                command: |
+                  wget -O /tmp/ondemand-release-web_3.1.1-focal_all.deb https://apt.osc.edu/ondemand/3.1/ondemand-release-web_3.1.1-focal_all.deb
+                  apt install /tmp/ondemand-release-web_3.1.1-focal_all.deb
+      - when:
+          condition:
+            equal: [ ubuntu22_04, << parameters.os >> ]
+          steps:
+            - run:
+                name: Install OnDemand (part 2)
+                command: |
+                  wget -O /tmp/ondemand-release-web_3.1.1-jammy_all.deb https://apt.osc.edu/ondemand/3.1/ondemand-release-web_3.1.1-jammy_all.deb
+                  apt install /tmp/ondemand-release-web_3.1.1-jammy_all.deb
+      - when:
+          condition:
+            equal: [ debian12, << parameters.os >> ]
+          steps:
+            - run:
+                name: Install OnDemand (part 2)
+                command: |
+                  wget -O /tmp/ondemand-release-web_3.1.1-bookworm_all.deb https://apt.osc.edu/ondemand/3.1/ondemand-release-web_3.1.1-bookworm_all.deb
+                  apt install /tmp/ondemand-release-web_3.1.1-bookworm_all.deb
+      - when:
+          condition:
+            or:
+              - equal: [ ubuntu20_04, << parameters.os >> ]
+              - equal: [ ubuntu22_04, << parameters.os >> ]
+              - equal: [ debian12, << parameters.os >> ]
+          steps:
+            - run:
+                name: Install OnDemand (part 3)
+                command: |
                   apt update
                   DEBIAN_FRONTEND=noninteractive TZ=US/Eastern apt install ondemand -y
             - run:
-                name: Install additional Ubuntu dependencies
+                name: Install additional Ubuntu/Debian dependencies
                 command: |
                   python_version=$(python3 --version | awk '{print $2}' | cut -d'.' -f1-2)
                   apt install python${python_version}-venv -y
                   apt install acl cron
                   mkdir /etc/httpd
                   ln -s /var/log/apache2 /etc/httpd/logs
+      - when:
+          condition:
+            equal: [ amazonlinux2023, << parameters.os >> ]
+          steps:
+            - run:
+                name: Install OnDemand
+                command: |
+                  dnf install https://yum.osc.edu/ondemand/3.1/ondemand-release-web-3.1-1.amzn2023.noarch.rpm
+                  dnf install ondemand
       - run:
           name: Create virtual environment for pip installs
           command: python3 -m venv ${VENV_DIR}
@@ -236,8 +303,12 @@ workflows:
               os:
                 - rocky8
                 - alma8
+                - rhel8
                 - rocky9
                 - alma9
+                - rhel9
                 - ubuntu20_04
                 - ubuntu22_04
+                - debian12
+                - amazonlinux2023
               install-type: ["export-tool"]
