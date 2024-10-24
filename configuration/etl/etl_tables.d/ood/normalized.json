@@ -37,11 +37,6 @@
                 "nullable": false
             },
             {
-                "name": "reverse_proxy_port",
-                "type": "varchar(5)",
-                "nullable": false
-            },
-            {
                 "name": "app",
                 "type": "varchar(64)",
                 "nullable": false
